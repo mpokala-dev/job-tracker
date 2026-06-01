@@ -37,9 +37,21 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 ## Tech stack:
 
-Next.js 14 App Router
-NextAuth v5 (Auth.js) — Google + GitHub OAuth + email/password
-Supabase PostgreSQL (no pgvector this time, just regular tables)
-Tailwind CSS v4
-React Hook Form + Zod
-Vitest + GitHub Actions CI
+- Next.js 14 App Router
+
+- NextAuth v5 (Auth.js) — Google + GitHub OAuth + email/password
+
+- Supabase PostgreSQL (no pgvector this time, just regular tables)
+
+- Tailwind CSS v4
+
+- React Hook Form + Zod
+
+- Vitest + GitHub Actions CI
+
+
+## Data model:
+
+users        → managed by NextAuth
+
+applications → id, user_id, company, role, status, applied_date, notes, url
