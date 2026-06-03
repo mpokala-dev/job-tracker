@@ -50,3 +50,11 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 users        → managed by NextAuth
 
 applications → id, user_id, company, role, status, applied_date, notes, url
+
+## Pages:
+
+* / — landing page (sign in CTA)
+* /auth/signin — sign in page
+* /dashboard — protected, shows all applications
+* /applications/new — add new application
+* /applications/[id] — view/edit application
