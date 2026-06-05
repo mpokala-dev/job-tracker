@@ -58,3 +58,6 @@ applications → id, user_id, company, role, status, applied_date, notes, url
 * /dashboard — protected, shows all applications
 * /applications/new — add new application
 * /applications/[id] — view/edit application
+
+
+Yet to create CI
