@@ -60,4 +60,4 @@ applications → id, user_id, company, role, status, applied_date, notes, url
 * /applications/[id] — view/edit application
 
 
-Yet to create CI
+
