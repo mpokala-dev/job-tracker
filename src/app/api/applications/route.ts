@@ -20,10 +20,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: parsed.error.issues[0].message }, { status: 400 })
   }
 
-  const application = await createApplication(session.user.id, {
-    ...parsed.data,
-    url: parsed.data.url || null,
-    notes: parsed.data.notes || null,
-  })
+  const application = await createApplication(session.user.id, parsed.data)
   return NextResponse.json(application, { status: 201 })
 }
