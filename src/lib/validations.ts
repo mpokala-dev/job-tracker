@@ -7,11 +7,18 @@ export const applicationSchema = z.object({
   applied_date: z.string().min(1, 'Date is required'),
   url: z.union([z.url('Must be a valid URL'), z.literal(''), z.null()])
   .optional()
-  .transform(val => val || null),
+  .transform(val => val?.trim() || null),
   notes: z.string().optional().nullable().transform(val => val || null),
 })
 
-export type ApplicationFormData = z.infer<typeof applicationSchema>
+export type ApplicationFormData = {
+  company: string
+  role: string
+  status: 'applied' | 'interview' | 'offer' | 'rejected'
+  applied_date: string
+  url?: string | null
+  notes?: string | null
+}
 
 export const signUpSchema = z.object({
   name: z.string().min(1, 'Name is required'),

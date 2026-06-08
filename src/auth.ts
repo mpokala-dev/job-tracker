@@ -1,19 +1,22 @@
 import NextAuth from 'next-auth'
 import GitHub from 'next-auth/providers/github'
 import Credentials from 'next-auth/providers/credentials'
-import { SupabaseAdapter } from '@auth/supabase-adapter'
 import bcrypt from 'bcryptjs'
 import { supabaseAdmin } from '@/lib/supabase'
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
-  adapter: SupabaseAdapter({
-    url: process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    secret: process.env.SUPABASE_SERVICE_ROLE_KEY!,
-  }),
   providers: [
     GitHub({
       clientId: process.env.AUTH_GITHUB_ID!,
       clientSecret: process.env.AUTH_GITHUB_SECRET!,
+      profile(profile) {
+        return {
+          id: profile.id.toString(),
+          name: profile.name ?? profile.login,
+          email: profile.email,
+          image: profile.avatar_url,
+        }
+      },
     }),
     Credentials({
       credentials: {
@@ -44,8 +47,34 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     error: '/auth/signin',
   },
   callbacks: {
-    async jwt({ token, user }) {
-      if (user) token.id = user.id
+    async jwt({ token, user, account  }) {
+      if (user) {
+        // On first sign in, upsert user into Supabase
+        if (account?.provider === 'github' && user.email) {
+          const { data: existing } = await supabaseAdmin
+            .from('users')
+            .select('id')
+            .eq('email', user.email)
+            .single()
+
+          if (existing) {
+            token.id = existing.id
+          } else {
+            const { data: newUser } = await supabaseAdmin
+              .from('users')
+              .insert({
+                name: user.name,
+                email: user.email,
+                image: user.image,
+              })
+              .select('id')
+              .single()
+            token.id = newUser?.id
+          }
+        } else {
+          token.id = user.id
+        }
+      }
       return token
     },
     async session({ session, token }) {
