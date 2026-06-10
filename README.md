@@ -64,3 +64,5 @@ applications → id, user_id, company, role, status, applied_date, notes, url
 ## Tech stack:
 
 Job Application Tracker — Next.js 14 App Router, NextAuth v5 (email/password + GitHub OAuth), Supabase PostgreSQL, React Hook Form, Zod v4, TypeScript, Tailwind CSS v4. Protected routes via middleware, JWT sessions, bcrypt password hashing. 44 tests, 92.4% coverage, GitHub Actions CI.
+
+Live on: https://job-tracker-bay-nine.vercel.app/
